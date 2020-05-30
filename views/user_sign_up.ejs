@@ -1,0 +1,14 @@
+<div class="form sign">
+    <h1>Sign Up</h1>
+
+    <form action="/users/create" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <input type="submit" value="Sign Up">
+        <a href="/users/sign-in">
+            Already have an account | <span>Sign In</span>
+        </a>
+    </form>
+</div>

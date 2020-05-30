@@ -1,0 +1,56 @@
+body{
+    margin: 0;
+
+    #layout-main{
+        height: 100%;
+    }
+
+    .form {
+        background-color: #f5f6f7;
+        padding: 15px;
+        margin-top: 50px;
+        width: 100%;
+    }
+    
+    .form h1{
+        margin-bottom: 14px;
+    }
+
+    form input {
+        padding: 10px 5px;
+        outline: none;
+        border: none;
+        margin: 15px 0;
+        display: block;
+        width: 100%;
+        font-size: 12px;
+        letter-spacing: 0.56px;
+     }
+
+    .sign {
+        max-width: 350px;
+        margin: 0 auto;
+
+        input[type='submit'] {
+            border: 0;
+            outline: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #29487d;
+            width: 100px;
+            color: white;
+            font-size: 12px;
+            padding: 10px 0;
+            letter-spacing: 0.34px;
+            cursor: pointer;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+         }
+    }
+    .posts {
+        width: 70%;
+    }
+}

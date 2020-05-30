@@ -1,0 +1,24 @@
+.sign {
+  background-color: #f5f6f7;
+  padding: 15px;
+  margin-top: 50px;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto; }
+  .sign button,
+  .sign input[type='submit'] {
+    border: 0;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #29487d;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    padding: 10px 0;
+    letter-spacing: 0.34px;
+    cursor: pointer; }
+  .sign a {
+    text-decoration: none;
+    color: black; }
