@@ -1,0 +1,16 @@
+{
+  "name": "friendsbook-fullstack",
+  "version": "1.0.0",
+  "description": "social media application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "EldhoseKuriakose",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongo": "^4.5.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1"
+  }
+}
