@@ -4,8 +4,7 @@ const app = express();
 const port  = 8000;
 const db = require('./config/mongoose');
 const session = require('express-session');
-
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -19,15 +18,10 @@ app.use(session({
   cookie: {
     maxAge: (1000 * 60 * 100)
   },
-  store: new MongoStore(
-    {
-      mongooseConnection: db,
-      autoRemove: 'disabled'
-    },
-    function(err){
-      console.log(err || 'connect mongodb setup ok');
-    }
-  )
+  store: MongoStore.create({
+    client: db.getClient(),
+    autoRemove: 'disabled'
+  })
 }));
 
 //use express router
