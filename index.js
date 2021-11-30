@@ -25,7 +25,7 @@ app.use(session({
 }));
 
 //use express router
-app.use('/', require('./routes/index.router'));
+app.use('/api', require('./routes/index.router'));
 
 app.listen(port, (err) => {
   if(err){
