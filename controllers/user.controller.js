@@ -4,7 +4,7 @@ const secretKey = "Az12Eb4Tk5Ty";
 
 //Registration of user
 module.exports.register = async (req, res) => {
-  if(!req.body.firstName || !req.body.email || !req.body.password || !req.body.lastName || !req.body.dob){
+  if(!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password || !req.body.dob){
     //If all required fields are not available
     return res.status(404).json({
       message: "Fill required fields"
@@ -44,6 +44,44 @@ module.exports.register = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Registration failed due to internal server error"
+    });
+  }
+}
+
+//User Login
+module.exports.login = async(req, res) => {
+  if(!req.body.email || !req.body.password) {
+    return res.status(404).json({
+      message: "Email and password is required"
+    });
+  }
+  //If fields are available
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if(user && req.body.password === user.password) {
+      //Generate token
+      const token = jwt.sign({ _id: user.id, email: user.email }, secretKey, { expiresIn: '60 days' });
+      return res.status(200).json({
+        message: "Login Successful",
+        token: token,
+        data: {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          dob: user.dob,
+          avatar: user.avatar,
+          userName: user.userName,
+          phoneNumber: user.phoneNumber
+        }
+      });
+    } else {
+      return res.status(406).json({
+        message: "Invalid email/password"
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Login failed due to internal server error"
     });
   }
 }

@@ -12,7 +12,6 @@ module.exports.authenticate = (req, res, next) => {
       next();
     } catch (err) {
       //Token is invalid
-      console.log("Invalid Token", err);
       return res.status(401).json({
         message: "Unauthorized"
       });

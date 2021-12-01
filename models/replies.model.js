@@ -2,15 +2,24 @@ const mongoose = require("mongoose");
 
 const repliesSchema = new mongoose.Schema(
   {
-    content: {
+    replyId: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    description: {
       type: String,
       required: true
     },
-    photo: {
+    content: {
       type: String
     },
-    video: {
+    type: {
       type: String
+    },
+    parentComment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment"
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,6 +33,12 @@ const repliesSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Like"
+      }
+    ],
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Replies"
       }
     ]
   },

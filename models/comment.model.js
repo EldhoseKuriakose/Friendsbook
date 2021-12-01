@@ -2,15 +2,21 @@ const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema(
   {
-    content: {
+    commentId: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    description: {
       type: String,
       required: true
     },
-    photo: {
+    content: {
       type: String
     },
-    video: {
-      type: String
+    type: {
+      type: String,
+      enum: ['photo', 'video', 'text']
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
