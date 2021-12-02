@@ -43,7 +43,7 @@ module.exports.register = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Registration failed due to internal server error"
+      message: "Registration failed"
     });
   }
 }
@@ -81,7 +81,77 @@ module.exports.login = async(req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      message: "Login failed due to internal server error"
+      message: "Login failed"
+    });
+  }
+}
+
+//Follow user
+module.exports.follow = async (req, res) => {
+  if(!req.params.userName) {
+    return res.status(404).json({
+      message: "User Name is required"
+    });
+  }
+  try {
+    const user = await User.findOne({ _id: req.user });
+    const followedUser = await User.findOne({ userName: req.params.userName });
+    if(user && followedUser) {
+      //Adding user to following and follwer list
+      user.following.push(followedUser);
+      user.save();
+      followedUser.followers.push(user);
+      followedUser.save();
+      return res.status(200).json({
+        message: "Follow success",
+        data: {
+          userName: followedUser.userName,
+          action: "follow"
+        }
+      });
+    } else {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Following failed"
+    });
+  }
+}
+
+//Unfollow User
+module.exports.unFollow = async (req, res) => {
+  if(!req.params.userName) {
+    return res.status(404).json({
+      message: "User id is required"
+    });
+  }
+  try {
+    const user = await User.findOne({ _id: req.user });
+    const unFollowedUser = await User.findOne({ userName: req.params.userName });
+    if(user && unFollowedUser) {
+      //Removing user from following and follwer list
+      user.following.pull(unFollowedUser);
+      unFollowedUser.followers.pull(user);
+      user.save();
+      unFollowedUser.save();
+      return res.status(200).json({
+        message: "Unfollow success",
+        data: {
+          userName: unFollowedUser.userName,
+          action: "Unfollow"
+        }
+      });
+    } else {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Unfollowing failed"
     });
   }
 }

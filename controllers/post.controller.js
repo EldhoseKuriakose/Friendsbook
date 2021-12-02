@@ -65,7 +65,7 @@ module.exports.create = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      message: "Post creation failed due to internal server error"
+      message: "Post creation failed"
     });
   }
 }
@@ -138,7 +138,7 @@ module.exports.update = async (req, res) => {
   } catch (error) {
     console.log(error)
     return res.status(500).json({
-      message: "Post updation failed due to internal server error"
+      message: "Post updation failed"
     });
   }
 }
@@ -181,7 +181,7 @@ module.exports.remove = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      message: "Post deletion failed due to internal server error"
+      message: "Post deletion failed"
     });
   }
 }
