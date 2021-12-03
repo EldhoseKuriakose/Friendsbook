@@ -29,11 +29,6 @@ module.exports.create = async (req, res) => {
         //Save Post to user model
         user.posts.push(newPost);
         user.save();
-        let firstLike = '';
-        if(newPost.likes.length > 0) {
-          let temp = await Like.findOne({ user: newPost.likes[0] });
-          firstLike = await User.findOne({ _id: temp.user });
-        }
         return res.status(200).json({
           message: "Post created successfully",
           data: {
@@ -42,7 +37,6 @@ module.exports.create = async (req, res) => {
             content: newPost.content,
             type: newPost.type,
             likes: newPost.likes.length,
-            firstLike: firstLike,
             comments: newPost.comments.length,
             createdAt: newPost.createdAt,
             updatedAt: newPost.updatedAt,
@@ -95,11 +89,6 @@ module.exports.update = async (req, res) => {
             post.content = req.body.content;
           }
           post.save();
-          let firstLike = '';
-          if(post.likes.length > 0) {
-            let temp = await Like.findOne({ user: post.likes[0] });
-            firstLike = await User.findOne({ _id: temp.user });
-          }
           //Success response
           return res.status(200).json({
             message: "Post updation successful",
@@ -109,7 +98,6 @@ module.exports.update = async (req, res) => {
               content: post.content,
               type: post.type,
               likes: post.likes.length,
-              firstLike: firstLike,
               comments: post.comments.length,
               createdAt: post.createdAt,
               updatedAt: post.updatedAt,
@@ -182,6 +170,55 @@ module.exports.remove = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Post deletion failed"
+    });
+  }
+}
+
+module.exports.userPosts = async (req, res) => {
+  if(!req.params.pageNo) {
+    return res.status(404).json({
+      message: "Pageno is required"
+    });
+  }
+  try {
+    //Finding user
+    const user = await User.findOne({ _id: req.user });
+    if(user) {
+      //retrieving data according to pageno
+      let items = await Post.find({ user: user }).skip((req.params.pageNo * 10) - 10).limit(10);
+      let firstLike = '';
+      let restructuredItems = [];
+      items.forEach(item => {
+        restructuredItems.push({
+          postId: item.postId,
+          description: item.description,
+          content: item.content,
+          type: item.type,
+          likes: item.likes.length,
+          comments: item.comments.length,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt
+        });
+      });
+      return res.status(200).json({
+        message: "Data retrieved",
+        data: {
+          currentPage: req.params.pageNo,
+          totalPages: parseInt((user.posts.length + 9) / 10),
+          totalItems: user.posts.length,
+          totalItemsInCurrentPage: restructuredItems.length,
+          results: restructuredItems
+        }
+      });
+    } else {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "Posts retrieving failed"
     });
   }
 }

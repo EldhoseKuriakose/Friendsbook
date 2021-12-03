@@ -6,5 +6,6 @@ const postController = require('../controllers/post.controller');
 router.post('/create', authenticationMiddleware.authenticate, postController.create);
 router.put('/update', authenticationMiddleware.authenticate, postController.update);
 router.delete('/remove', authenticationMiddleware.authenticate, postController.remove);
+router.get('/me/:pageNo', authenticationMiddleware.authenticate, postController.userPosts);
 
 module.exports = router;
